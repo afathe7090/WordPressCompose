@@ -1,0 +1,45 @@
+version: "3.1"
+
+services:
+
+
+# ####################### MARIADB Services ##############################
+  mariadb_services: 
+    image: mariadb
+    restart: always
+
+    environment:
+      MYSQL_DATABASE: ahmed_dp
+      MYSQL_USER: ahmed_dp
+      MYSQL_PASSWORD: ahmed_dp
+      MYSQL_ROOT_PASSWORD: 1 
+
+    
+
+# ###################### WORDPRESS Services ################################
+  wordpress_services:
+
+    depends_on:
+      - mariadb_services
+    
+    image: wordpress
+    restart: always
+
+    volumes:
+      - ./wordpress:/var/www/html
+      - ./mysql:/var/lib/mysql
+    
+    environment:
+      WORDPRESS_DB_HOST: mariadb_services
+      WORDPRESS_DB_USER: ahmed_dp
+      WORDPRESS_DB_PASSWORD: ahmed_dp
+      WORDPRESS_DB_NAME: ahmed_dp
+
+    ports:
+      - "8088:80"
+
+## ##################### TOP Level #############
+
+volumes:
+  mysql: {}
+  wordpress: {}
